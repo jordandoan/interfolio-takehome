@@ -9,20 +9,24 @@ import { HttpClientModule } from '@angular/common/http';
 import { WorkComponent } from './work/work.component';
 
 import { MatCardModule } from '@angular/material/card';
-import { MatPaginatorModule } from '@angular/material/paginator'
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { ToolbarComponent } from './toolbar/toolbar.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    WorkComponent
+    WorkComponent,
+    ToolbarComponent
   ],
   imports: [
     BrowserModule,
     NoopAnimationsModule,
     HttpClientModule,
     MatCardModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatToolbarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
