@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { WorkComponent } from './work/work.component';
 
 import { MatCardModule } from '@angular/material/card';
+import { MatPaginatorModule } from '@angular/material/paginator'
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { MatCardModule } from '@angular/material/card';
     BrowserModule,
     NoopAnimationsModule,
     HttpClientModule,
-    MatCardModule
+    MatCardModule,
+    MatPaginatorModule
   ],
   providers: [],
   bootstrap: [AppComponent]

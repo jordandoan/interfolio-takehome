@@ -1,4 +1,5 @@
 <div>
-  <app-home [rows]=10>
+  <mat-paginator [length]="1000" [pageSize]="10" (page)="pageEvent = $event" aria-label="Select page"></mat-paginator>
+  <app-home [rows]=10 [pageEvent]="pageEvent">
   </app-home>
 </div>
