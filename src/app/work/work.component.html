@@ -1,0 +1,7 @@
+<mat-card class="card">
+  <mat-card-title>{{work.title || "Untitled" }}</mat-card-title>
+  <p>Published by: {{ work.publisher}} </p>
+  <p>Issue #{{work.issue}}</p>
+  <p>Issued: {{work.issued["date-parts"][0].join("-")}} </p>
+</mat-card>
+
