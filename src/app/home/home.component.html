@@ -1,2 +1,6 @@
-<div *ngIf="pageEvent"> {{pageEvent.pageIndex }}</div>
-<app-work *ngFor="let work of works; index as i" [work]="work"></app-work>
+<div class="container">
+  <mat-spinner class="spinner" *ngIf="loading; else data" color="accent"></mat-spinner>
+  <ng-template #data>
+    <app-work *ngFor="let work of works; index as i" [work]="work"></app-work>
+  </ng-template>
+</div>
