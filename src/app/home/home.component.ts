@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ApiHttpService } from '../core/api-http.service';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +18,7 @@ export class HomeComponent implements OnInit, OnChanges {
   loading: boolean;
   errorMessage: any;
 
-  constructor(private http: HttpClient, private _snackbar: MatSnackBar) { }
+  constructor(private apiHttpService: ApiHttpService, private _snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
     localStorage.clear();
@@ -31,25 +32,23 @@ export class HomeComponent implements OnInit, OnChanges {
   fetch(changes?: SimpleChanges) {
     this.loading = true;
     this.errorMessage = null;
+    let pageIndex = 0;
     if (this.pageEvent && changes['pageEvent']) {
-      let cache = localStorage.getItem("offset" + (this.pageEvent.pageIndex * this.rows));
-      if (cache) {
-        this.setFields(JSON.parse(cache))
-      } else {
-        this.http.get('https://api.crossref.org/works?rows=' + this.rows + '&offset=' + (this.pageEvent.pageIndex * this.rows) + "&mailto=jordandoan@hotmail.com").subscribe(res => {
-          this.setFields(res);
-          localStorage.setItem("offset" + (this.pageEvent.pageIndex * this.rows), JSON.stringify(res));
-        }, err => {
-          this._snackbar.open(err.message, "CLOSE")
-        });
-      }
+      pageIndex = this.pageEvent.pageIndex;
+    }
+    let cache = localStorage.getItem("offset" + pageIndex);
+    let offset = pageIndex * this.rows;
+    if (cache) {
+      this.setFields(JSON.parse(cache))
     } else {
-      // initial fetch
-      this.http.get('https://api.crossref.org/works?rows=' + this.rows + "&mailto=jordandoan@hotmail.com").subscribe(res => {
-        this.setFields(res);
-        localStorage.setItem("offset0", JSON.stringify(res))
-      }, err => {
-        this._snackbar.open(err.message, "CLOSE")
+      this.apiHttpService.get(`&rows=${this.rows}&offset=${offset}`).subscribe({
+        next: res => {
+          this.setFields(res);
+          localStorage.setItem("offset" + pageIndex, JSON.stringify(res))
+        },
+        error: err => {
+          this._snackbar.open(err.message, "CLOSE")
+        }
       })
     }
   }
