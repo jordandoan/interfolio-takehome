@@ -11,7 +11,4 @@ export class AppComponent {
   title = 'interfolio-takehome';
   pageEvent: PageEvent;
 
-  handlePage (event?: PageEvent) {
-    this.pageEvent = event;
-  }
 }

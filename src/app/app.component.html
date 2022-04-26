@@ -1,5 +1,5 @@
 <div>
-  <app-toolbar (newPageEvent)=handlePage($event)></app-toolbar>
+  <app-toolbar (newPageEvent)="pageEvent = $event"></app-toolbar>
   <app-home [rows]=10 [pageEvent]="pageEvent">
   </app-home>
 </div>
