@@ -26,7 +26,6 @@ describe('WorkComponent', () => {
     fixture = TestBed.createComponent(WorkComponent);
     component = fixture.componentInstance;
     component.work = testWork;
-    component.title = "Test title";
     title = fixture.nativeElement.querySelector('.card-title');
     published = fixture.nativeElement.querySelector('.published');
     fixture.detectChanges();
@@ -44,4 +43,17 @@ describe('WorkComponent', () => {
   it('should have `Test publisher` as publisher', () => {
     expect(published.innerHTML).toContain(testWork.publisher);
   });
+
+  it('should have title as `Untitled` when work has no title', () => {
+    component.work = {
+      title: [""],
+      publisher: "Test publisher",
+      issued: {
+        "date-parts": [[2000,1,1]]
+      }
+    }
+    component.setTitle();
+    fixture.detectChanges();
+    expect(title.innerHTML).toContain("Untitled");
+  })
 });
