@@ -17,18 +17,15 @@ export class HomeComponent implements OnInit, OnChanges {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
+    localStorage.clear();
     this.loading = true;
     const works = localStorage.getItem("works" + this.rows)
     if (works) {
-      this.data = JSON.parse(works);
-      this.works = this.data.message.items;
-      this.loading = false;
+      this.setFields(JSON.parse(works))
     } else {
       this.http.get('https://api.crossref.org/works?rows=' + this.rows).subscribe(res => {
-        this.data = res;
-        this.works = this.data.message.items
-        localStorage.setItem("works" + this.rows, JSON.stringify(res))
-        this.loading = false;
+        this.setFields(res);
+        localStorage.setItem("worksoffset0", JSON.stringify(res))
       })
     }
   }
@@ -36,12 +33,21 @@ export class HomeComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     this.loading = true;
     if (this.pageEvent && changes['pageEvent']) {
-      this.http.get('https://api.crossref.org/works?rows=' + this.rows + '&offset=' + this.pageEvent.pageIndex).subscribe(res => {
-        this.data = res;
-        this.works = this.data.message.items
-        this.loading = false;
-      })
+      let cache = localStorage.getItem("worksoffset" + this.pageEvent.pageIndex);
+      if (cache) {
+        this.setFields(JSON.parse(cache))
+      } else {
+        this.http.get('https://api.crossref.org/works?rows=' + this.rows + '&offset=' + this.pageEvent.pageIndex).subscribe(res => {
+          this.setFields(res);
+          localStorage.setItem("worksoffset" + this.pageEvent.pageIndex, JSON.stringify(res));
+        });
+      }
     }
+  }
 
+  setFields(data) {
+    this.data = data;
+    this.works = data.message.items;
+    this.loading = false;
   }
 }
