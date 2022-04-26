@@ -17,7 +17,6 @@ export class WorkComponent implements OnInit {
   }
 
   setAuthor() {
-    let s = ""
     if (this.work.author) {
       this.author = this.work.author.map(
         author => (author.given + " " + author.family)
@@ -26,6 +25,7 @@ export class WorkComponent implements OnInit {
       this.author = null;
     }
   }
+
   setTitle() {
     this.title = (this.work['title'] && this.work['title'][0]) || "Untitled";
   }

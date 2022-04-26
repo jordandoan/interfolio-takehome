@@ -1,11 +1,11 @@
 <mat-card class="card">
   <mat-card-title-group>
-    <mat-card-title>{{ title }}</mat-card-title>
+    <mat-card-title class="card-title">{{ title }}</mat-card-title>
     <mat-card-subtitle>{{ work.type }}</mat-card-subtitle>
     <mat-card-content>{{work.issued["date-parts"][0].join("-") || "Unknown Date"}} </mat-card-content>
   </mat-card-title-group>
   <mat-card-content *ngIf="work.author">Written by: {{ author }} </mat-card-content>
-  <mat-card-content>Published by: {{ work.publisher}} </mat-card-content>
+  <mat-card-content class="published">Published by: {{ work.publisher}} </mat-card-content>
   <mat-card-content *ngIf="work.issue">Issue #{{work.issue}}</mat-card-content>
   <mat-card-content><a href="{{ work['URL'] }}"> Link </a></mat-card-content>
 </mat-card>
