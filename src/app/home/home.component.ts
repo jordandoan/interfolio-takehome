@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit, OnChanges {
       if (cache) {
         this.setFields(JSON.parse(cache))
       } else {
-        this.http.get('https://api.crossref.org/works?rows=' + this.rows + '&offset=' + (this.pageEvent.pageIndex * this.rows)).subscribe(res => {
+        this.http.get('https://api.crossref.org/works?rows=' + this.rows + '&offset=' + (this.pageEvent.pageIndex * this.rows) + "&mailto=jordandoan@hotmail.com").subscribe(res => {
           this.setFields(res);
           localStorage.setItem("offset" + (this.pageEvent.pageIndex * this.rows), JSON.stringify(res));
         }, err => {
@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit, OnChanges {
       }
     } else {
       // initial fetch
-      this.http.get('https://api.crossref.org/works?rows=' + this.rows).subscribe(res => {
+      this.http.get('https://api.crossref.org/works?rows=' + this.rows + "&mailto=jordandoan@hotmail.com").subscribe(res => {
         this.setFields(res);
         localStorage.setItem("offset0", JSON.stringify(res))
       }, err => {
