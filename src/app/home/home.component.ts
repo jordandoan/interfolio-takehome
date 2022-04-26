@@ -32,13 +32,13 @@ export class HomeComponent implements OnInit, OnChanges {
     this.loading = true;
     this.errorMessage = null;
     if (this.pageEvent && changes['pageEvent']) {
-      let cache = localStorage.getItem("offset" + this.pageEvent.pageIndex);
+      let cache = localStorage.getItem("offset" + (this.pageEvent.pageIndex * this.rows));
       if (cache) {
         this.setFields(JSON.parse(cache))
       } else {
-        this.http.get('https://api.crossref.org/works?rows=' + this.rows + '&offset=' + this.pageEvent.pageIndex).subscribe(res => {
+        this.http.get('https://api.crossref.org/works?rows=' + this.rows + '&offset=' + (this.pageEvent.pageIndex * this.rows)).subscribe(res => {
           this.setFields(res);
-          localStorage.setItem("offset" + this.pageEvent.pageIndex, JSON.stringify(res));
+          localStorage.setItem("offset" + (this.pageEvent.pageIndex * this.rows), JSON.stringify(res));
         }, err => {
           this._snackbar.open(err.message, "CLOSE")
         });
