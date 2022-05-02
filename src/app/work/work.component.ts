@@ -5,6 +5,7 @@ import { Component, OnInit, Input, setTestabilityGetter } from '@angular/core';
   templateUrl: './work.component.html',
   styleUrls: ['./work.component.css']
 })
+// Component that renders a card for a published work
 export class WorkComponent implements OnInit {
   @Input() work: any;
   title: string;
@@ -27,6 +28,7 @@ export class WorkComponent implements OnInit {
   }
 
   setTitle() {
+    // sets title to Untitled if there is no title
     this.title = (this.work['title'] && this.work['title'][0]) || "Untitled";
   }
 }
