@@ -9,27 +9,31 @@ import { ApiHttpService } from '../core/api-http.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit, OnChanges {
-  @Input() rows: number;
-  @Input() pageEvent: PageEvent;
 
-  data: any;
-  works: any;
-  loading: boolean;
-  errorMessage: any;
+// Displays list of works from CrossRef API
+export class HomeComponent implements OnInit, OnChanges {
+  @Input() rows: number; // Number of rows viewed per page
+  @Input() pageEvent: PageEvent; // From the Material's paginator, used for API call
+
+  data: any; // The data received by API
+  works: any; // List of works from API
+  loading: boolean; // Shows spinner when calling API
+  errorMessage: any; // Error message from API
 
   constructor(private apiHttpService: ApiHttpService, private _snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
     localStorage.clear();
-    this.fetch(null)
+    this.getData(null)
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.fetch(changes)
+    this.getData(changes)
   }
 
-  fetch(changes?: SimpleChanges) {
+  // Process of calling the API
+  // Checks for cached data. If not, then it makes a call and stores results into local storage.
+  getData(changes?: SimpleChanges) {
     this.loading = true;
     this.errorMessage = null;
     let pageIndex = 0;
@@ -37,22 +41,34 @@ export class HomeComponent implements OnInit, OnChanges {
       pageIndex = this.pageEvent.pageIndex;
     }
     let cache = localStorage.getItem("offset" + pageIndex);
+    // Offset is used to receive different works
     let offset = pageIndex * this.rows;
     if (cache) {
       this.setFields(JSON.parse(cache))
     } else {
-      this.apiHttpService.get(`&rows=${this.rows}&offset=${offset}`).subscribe({
-        next: res => {
-          this.setFields(res);
-          localStorage.setItem("offset" + pageIndex, JSON.stringify(res))
-        },
-        error: err => {
-          this._snackbar.open(err.message, "CLOSE")
-        }
-      })
+      let options = {
+        rows: this.rows,
+        offset: offset
+        // can add search terms in here when ready
+      }
+      this.fetch('', options, pageIndex)
     }
   }
-  
+
+  // Makes call to API using our apiHttp service
+  fetch(url, options, pageIndex) {
+    this.apiHttpService.get(url, options).subscribe({
+      next: res => {
+        this.setFields(res);
+        localStorage.setItem("offset" + pageIndex, JSON.stringify(res))
+      },
+      error: err => {
+        this._snackbar.open(err.message, "CLOSE")
+      }
+    })
+  }
+
+  // Sets state for data, works, and loading variables
   setFields(data) {
     this.data = data;
     this.works = data.message.items;
