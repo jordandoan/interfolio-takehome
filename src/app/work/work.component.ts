@@ -17,17 +17,17 @@ export class WorkComponent implements OnInit {
     this.setAuthor();
   }
 
-  setAuthor() {
+  setAuthor(): void {
     if (this.work.author) {
       this.author = this.work.author.map(
         author => (author.given + " " + author.family)
       ).join(", ");
     } else {
-      this.author = null;
+      this.author = "Unknown author";
     }
   }
 
-  setTitle() {
+  setTitle(): void {
     // sets title to Untitled if there is no title
     this.title = (this.work['title'] && this.work['title'][0]) || "Untitled";
   }
