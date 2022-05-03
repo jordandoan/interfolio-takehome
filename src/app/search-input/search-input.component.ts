@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-search-input',
@@ -6,9 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./search-input.component.css']
 })
 export class SearchInputComponent implements OnInit {
-  value = "Sample";
+  query = "";
+  @Output() sendQuery = new EventEmitter<String>()
 
   constructor() { }
+
+  searchWithQuery() {
+    alert(this.query);
+    this.sendQuery.emit(this.query);
+  }
 
   ngOnInit(): void {
   }
