@@ -1,6 +1,4 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiHttpService } from '../core/api-http.service';
 
@@ -13,8 +11,7 @@ import { ApiHttpService } from '../core/api-http.service';
 // Displays list of works from CrossRef API
 export class HomeComponent implements OnInit, OnChanges {
   @Input() rows: number; // Number of rows viewed per page
-  @Input() pageEvent: PageEvent; // From the Material's paginator, used for API call
-  @Input() pageIndex: number; // Page index
+  @Input() pageIndex: number = 0; // Page index
   @Input() query: string; // Search term
 
   data: any; // The data received by API
@@ -26,43 +23,49 @@ export class HomeComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     localStorage.clear();
-    this.getData(null)
+    this.getData();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.getData(changes)
+    this.getData()
   }
 
   // Process of calling the API
   // Checks for cached data. If not, then it makes a call and stores results into local storage.
-  getData(changes?: SimpleChanges) {
+  getData() {
     this.loading = true;
     this.errorMessage = null;
-    let pageIndex = 0;
-    if (this.pageEvent && changes['pageEvent']) {
-      pageIndex = this.pageEvent.pageIndex;
-    }
-    let cache = localStorage.getItem("offset" + pageIndex);
+    let offset = 0 || this.pageIndex * this.rows;
+    let cacheKey = this.createKey(offset)
+    let cache = localStorage.getItem(cacheKey);
     // Offset is used to receive different works
-    let offset = pageIndex * this.rows;
     if (cache) {
       this.setFields(JSON.parse(cache))
     } else {
       let options = {
-        rows: this.rows,
-        offset: offset
+        params: {
+          rows: this.rows,
+          offset: offset,
+          query: this.query
+        }
         // can add search terms in here when ready
       }
-      this.fetch('', options, pageIndex)
+      this.fetch('', options)
     }
   }
 
+  // creates a key for caching search results and pages
+  createKey(offset) {
+    let key = `query_${this.query}_page_${this.pageIndex}_offset_${offset}`
+    return key
+  }
+
   // Makes call to API using our apiHttp service
-  fetch(url, options, pageIndex) {
+  fetch(url, options) {
     this.apiHttpService.get(url, options).subscribe({
       next: res => {
         this.setFields(res);
-        localStorage.setItem("offset" + pageIndex, JSON.stringify(res))
+        localStorage.setItem(this.createKey(options.params.offset), JSON.stringify(res))
       },
       error: err => {
         this._snackbar.open(err.message, "CLOSE")

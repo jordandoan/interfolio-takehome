@@ -16,10 +16,9 @@ export class SearchInputComponent implements OnInit {
       this.searchWithQuery();
     }
   }
+
   searchWithQuery() {
-    if (this.query) {
-      this.sendQuery.emit(this.query);
-    }
+    this.sendQuery.emit(this.query);
   }
 
   ngOnInit(): void {
