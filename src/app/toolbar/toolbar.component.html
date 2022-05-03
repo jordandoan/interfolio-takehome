@@ -1,4 +1,5 @@
 <mat-toolbar color="accent" class="toolbar-container">
   <p>CrossRef API: Works</p>
+  <app-search-input></app-search-input>
   <mat-paginator [length]="1000" [pageSize]="10" (page)="getWorks($event)" aria-label="Select page"></mat-paginator>
 </mat-toolbar>
