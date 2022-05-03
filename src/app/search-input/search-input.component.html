@@ -1,5 +1,5 @@
-<mat-form-field class="form">
+<mat-form-field class="form" (keypress)="handleEnter($event)">
   <mat-label>Search</mat-label>
   <input matInput type="text" [(ngModel)]="query">
-  <button (click)="searchWithQuery()">hi</button>
+  <button (click)="searchWithQuery()">Submit</button>
 </mat-form-field>

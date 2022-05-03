@@ -1,5 +1,5 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
+import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-toolbar',
@@ -10,7 +10,13 @@ import { PageEvent } from '@angular/material/paginator';
 // Header for page, which contains the paginator
 export class ToolbarComponent implements OnInit {
   @Output() newPageEvent = new EventEmitter<PageEvent>();
+  @Output() sendQuery = new EventEmitter<string>()
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  handleQuery(event) {
+    this.sendQuery.emit(event)
+    this.paginator.firstPage();
+  }
   // Sends pageEvent to components, where we can get the pageIndex
   public getWorks(event?: PageEvent) {
     this.newPageEvent.emit(event)

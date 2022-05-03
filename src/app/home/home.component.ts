@@ -14,6 +14,8 @@ import { ApiHttpService } from '../core/api-http.service';
 export class HomeComponent implements OnInit, OnChanges {
   @Input() rows: number; // Number of rows viewed per page
   @Input() pageEvent: PageEvent; // From the Material's paginator, used for API call
+  @Input() pageIndex: number; // Page index
+  @Input() query: string; // Search term
 
   data: any; // The data received by API
   works: any; // List of works from API

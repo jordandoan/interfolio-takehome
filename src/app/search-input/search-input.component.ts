@@ -11,9 +11,15 @@ export class SearchInputComponent implements OnInit {
 
   constructor() { }
 
+  handleEnter(event) {
+    if (event.keyCode == 13) {
+      this.searchWithQuery();
+    }
+  }
   searchWithQuery() {
-    alert(this.query);
-    this.sendQuery.emit(this.query);
+    if (this.query) {
+      this.sendQuery.emit(this.query);
+    }
   }
 
   ngOnInit(): void {
