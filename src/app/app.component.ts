@@ -9,6 +9,20 @@ import { PageEvent } from '@angular/material/paginator';
 
 export class AppComponent {
   title = 'interfolio-takehome';
-  pageEvent: PageEvent;
+  pageIndex: number = 0;
+  query: string = "";
+
+  handleQuery(event) {
+    this.query = event;
+  }
+
+  handlePageEvent(event) {
+    if (event) {
+      this.pageIndex = event.pageIndex;
+    } else {
+      this.pageIndex = 0
+    }
+  }
+
 
 }

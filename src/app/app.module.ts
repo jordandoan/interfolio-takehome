@@ -15,6 +15,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ToolbarComponent } from './toolbar/toolbar.component'
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CoreModule } from './core/core.module';
+import { SearchInputComponent } from './search-input/search-input.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -22,6 +26,7 @@ import { CoreModule } from './core/core.module';
     HomeComponent,
     WorkComponent,
     ToolbarComponent,
+    SearchInputComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,7 +37,10 @@ import { CoreModule } from './core/core.module';
     MatToolbarModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
-    CoreModule
+    CoreModule,
+    MatInputModule,
+    MatButtonModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
