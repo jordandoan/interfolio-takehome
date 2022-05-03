@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit, OnChanges {
 
   // Process of calling the API
   // Checks for cached data. If not, then it makes a call and stores results into local storage.
-  getData(changes?: SimpleChanges) {
+  getData(changes?: SimpleChanges): void {
     this.loading = true;
     this.errorMessage = null;
     let pageIndex = 0;
@@ -56,7 +56,7 @@ export class HomeComponent implements OnInit, OnChanges {
   }
 
   // Makes call to API using our apiHttp service
-  fetch(url, options, pageIndex) {
+  fetch(url, options, pageIndex): void {
     this.apiHttpService.get(url, options).subscribe({
       next: res => {
         this.setFields(res);
@@ -69,7 +69,7 @@ export class HomeComponent implements OnInit, OnChanges {
   }
 
   // Sets state for data, works, and loading variables
-  setFields(data) {
+  setFields(data): void {
     this.data = data;
     this.works = data.message.items;
     this.loading = false;
